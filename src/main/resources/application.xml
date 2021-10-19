@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+	<context:property-placeholder location="backend.properties" />
+	<tx:annotation-driven transaction-manager="dataSourceTransactionManager" />
+
+	<bean id="postgresql" class="org.postgresql.ds.PGSimpleDataSource">
+		<property name="serverName" value="${jdbc.datasource.ip}" />
+		<property name="portNumber" value="5432" />
+		<property name="databaseName" value="${jdbc.datasource.database}" />
+		<property name="user" value="${jdbc.datasource.user}" />
+		<property name="password" value="${jdbc.datasource.password}" />
+		<property name="reWriteBatchedInserts" value="true" />
+	</bean>
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="connectionTestQuery" value="SELECT 1" />
+		<property name="dataSource" ref="postgresql" />
+	</bean>
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<bean id="jdbcDao" class="">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+</beans>

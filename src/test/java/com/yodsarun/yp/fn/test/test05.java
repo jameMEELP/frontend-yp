@@ -13,7 +13,8 @@ public class test05 {
 		dataSource.setPassword("1234");
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		Number number = (Number) jdbcTemplate.update("INSERT INTO public.customers (first_name, last_name) VALUES('yodsarun', 'pongda')");
+		Number number = (Number) jdbcTemplate.update("INSERT INTO public.customers (first_name, last_name) VALUES ('yodsarun', 'pongda')");
 		System.out.println("number = " + number);
+		System.exit(0);
 	}
 }
